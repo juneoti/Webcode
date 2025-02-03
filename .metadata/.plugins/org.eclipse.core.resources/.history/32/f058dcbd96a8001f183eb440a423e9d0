@@ -1,0 +1,77 @@
+<%@page import="edu.web.member.MemberDAOImple"%>
+<%@page import="edu.web.member.MemberDAO"%>
+<%@page import="edu.web.member.MemberVO"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>로그인 결과</title>
+    <script>
+        function showMemberInfo() {
+            setTimeout(function() {
+                <% 
+                    String userid = (String) session.getAttribute("userid");
+                    MemberDAO dao = MemberDAOImple.getInstance();
+                    MemberVO member = dao.select(userid);
+                    if (member != null) {
+                %>
+                alert("아이디: <%= member.getUserid() %>\n" +
+                      "비밀번호: <%= member.getPassword() %>\n" +
+                      "이메일: <%= member.getEmail() %>\n" +
+                      "이메일 수신 동의: <%= member.getEmailAgree() %>\n" +
+                      "관심사: <%= String.join(", ", member.getInterest()) %>\n" +
+                      "전화번호: <%= member.getPhone() %>\n" +
+                      "자기소개: <%= member.getIntroduce() %>");
+                <% 
+                    } else { 
+                %>
+                alert("회원 정보를 찾을 수 없습니다.");
+                <% 
+                    } 
+                %>
+            }, 0);
+        }
+        
+        function confirmDelete() {
+            const userConfirmed = confirm("정말 삭제하시겠습니까?");
+            if (userConfirmed) {
+                window.location.href = 'DeleteServlet';
+                alert("계정을 성공적으로 삭제했습니다.");
+            } else {
+                alert("회원 탈퇴가 취소되었습니다.");
+            }
+        }
+    </script>
+</head>
+<body>
+    <%
+        int remainingTime = session.getMaxInactiveInterval() > 0 ? session.getMaxInactiveInterval() : 60;
+    %>
+    <p><%= userid %>님 환영합니다.</p>
+    <p>현재 남은 세션 시간: <span id="remainingTime"><%= remainingTime %></span>초</p>
+	<button onclick="showMemberInfo()">정보조회</button>
+    <button onclick="location.href='memberUpdate.jsp'">정보변경</button>
+	<button onclick="location.href='LogoutServlet'">로그아웃</button>
+	<button onclick="confirmDelete()">회원탈퇴</button>
+    <hr>
+    <script>
+        let remainingTime = <%= remainingTime %>;
+        let sessionExpired = false;
+
+        function updateRemainingTime() {
+            if (remainingTime > 0) {
+                remainingTime--;
+                document.getElementById("remainingTime").innerText = remainingTime;
+            } else if (!sessionExpired) {
+                sessionExpired = true;
+                alert("세션이 만료되었습니다. 다시 로그인해 주세요.");
+                window.location.href = 'login.jsp';
+            }
+        }
+
+        setInterval(updateRemainingTime, 1000);
+    </script>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<%@page import="java.util.Arrays"%>
+<%@page import="edu.web.member.MemberVO"%>
+<%@page import="edu.web.member.MemberDAOImple"%>
+<%@page import="edu.web.member.MemberDAO"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>회원 정보 변경</title>
+</head>
+<body>
+    <%
+        String userid = (String) session.getAttribute("userid");
+        MemberDAO dao = MemberDAOImple.getInstance();
+        MemberVO member = dao.select(userid);
+        if (member == null) {
+            out.println("<script>alert('회원 정보를 찾을 수 없습니다. 로그인 페이지로 이동합니다.'); location.href='login.jsp';</script>");
+            return;
+        }
+    %>
+    <h2>회원정보 변경</h2>
+    	<form action="UpdateServlet" method="post" autocomplete="off">
+	    <label for="userid">User ID: <%= member.getUserid() %></label>
+	    <input type="hidden" name="userid" value="<%= member.getUserid() %>"><br>
+	    
+	    <label for="password">Password:</label>
+	    <input type="password" name="password" value="<%= member.getPassword() %>" required><br>
+	    
+	    <label for="email">Email:</label>
+	    <input type="email" name="email" value="<%= member.getEmail() %>" required><br>
+	    
+	    <label for="emailAgree">Agree to receive emails:</label>
+      	<input type="checkbox" name="emailAgree" value="Y" <%= "YES".equals(member.getEmailAgree()) ? "checked" : "NO".equals(member.getEmailAgree()) ? "" : "" %>><br>
+	   
+	    <label for="interest">Interests:</label><br>
+	    <input type="checkbox" id="interest1" name="interest" value="서버 개발" <%= Arrays.asList(member.getInterest()).contains("서버 개발") ? "checked" : "" %>>
+	    <label for="interest1">서버 개발</label><br>
+	    <input type="checkbox" id="interest2" name="interest" value="앱 개발" <%= Arrays.asList(member.getInterest()).contains("앱 개발") ? "checked" : "" %>>
+	    <label for="interest2">앱 개발</label><br>
+	
+	    <label for="phone">Phone:</label>
+	    <input type="text" name="phone" value="<%= member.getPhone() %>" required><br>
+	    
+	    <label for="introduce">Introduction:</label><br>
+	    <textarea id="introduce" name="introduce" <%=member.getIntroduce() %>rows="4" cols="50" required></textarea><br>
+	    
+        <button type="submit">정보 수정</button>
+	    <button onclick="location.href='loginResult.jsp'">취소</button>
+	    
+	    </form>
+</body>
+</html>

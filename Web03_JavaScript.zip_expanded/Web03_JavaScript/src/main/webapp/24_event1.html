@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Event</title>
+</head>
+<body onload="window.alert('반갑습니다.')">
+	<h1 onclick="test1(this)"
+	onmouseover="test2(this)"
+	onmouseout="test3(this)">
+	자바스크립트 이벤트 핸들링(Event Handling)</h1>
+	
+	<script type="text/javascript">
+		let toggle = true;
+		function test1(title){
+			console.log(title);
+			if(toggle){
+				title.innerHTML = '자바스크립트 이벤트 처리';
+				toggle = false;
+			} else{
+				title.innerHTML = 'JavaScript Event Handling';
+				toggle = true;
+			}
+		}
+		
+		function test2(element){
+			element.style.backgroundColor = 'hotpink';
+			element.style.color = 'white';
+		}
+		
+		function test3(element){
+			element.style.backgroundColor = 'white';
+			element.style.color = 'black';
+		}
+/* 		function test1(element){
+			 if (element.textContent === '자바스크립트 이벤트 핸들링(Event Handling)') {
+	             element.textContent = 'JavaScriptHanding';
+	         } else {
+	             element.textContent = '자바스크립트 이벤트 핸들링(Event Handling)';
+	         }
+		} */
+	</script>
+</body>
+</html>

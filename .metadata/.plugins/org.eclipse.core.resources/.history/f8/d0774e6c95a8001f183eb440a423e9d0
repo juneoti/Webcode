@@ -1,0 +1,151 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>회원 가입</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        background-color: #f9f9f9;
+    }
+
+    .register-container {
+        text-align: center;
+        width: 400px;
+        padding: 20px;
+        background: #ffffff;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .register-container h2 {
+        margin-bottom: 20px;
+        font-size: 24px;
+        color: #333;
+    }
+
+    .register-container form {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .register-container label {
+        text-align: left;
+        font-size: 14px;
+        color: #555;
+        margin-bottom: 5px;
+        margin-left: -5px; /* 왼쪽으로 이동 */
+        font-weight: bold; /* 굵게 처리 */
+    }
+
+    .register-container input[type="text"],
+    .register-container input[type="password"],
+    .register-container input[type="email"],
+    .register-container input[type="tel"],
+    .register-container textarea {
+        width: 100%;
+        padding: 8px;
+        font-size: 14px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        margin-left: -5px; /* 왼쪽으로 이동 */
+    }
+
+    .register-container input[type="checkbox"] {
+        transform: scale(1.2); /* 크기 키움 */
+        margin-right: 8px;
+    }
+
+    .register-container textarea {
+        resize: none;
+    }
+
+    .register-container input[type="submit"] {
+        padding: 10px;
+        font-size: 14px;
+        color: #fff;
+        background-color: #007bff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-top: 10px;
+    }
+
+    .register-container input[type="submit"]:hover {
+        background-color: #0056b3;
+    }
+
+    .email-agree {
+        margin-bottom: 600px; 
+    }
+
+    .interests {
+        display: flex;
+        gap: 10px;
+        justify-content: flex-start;
+        margin-left: -5px;
+    }
+
+    .interests label {
+        display: flex;
+        align-items: center;
+        font-weight: bold;
+    }
+</style>
+<script>
+    window.onload = function() {
+        // 뒤로가기를 눌렀을 때 입력 필드 초기화
+        document.getElementById('userid').value = '';
+    };
+</script>
+</head>
+<body>
+    <div class="register-container">
+        <h2>회원 가입하기</h2>
+        <form action="register" method="post" autocomplete="off">
+            <label for="userid">User ID:</label>
+            <input type="text" id="userid" name="userid" required>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label class="email-agree" for="emailAgree">
+                <input type="checkbox" id="emailAgree" name="emailAgree">
+                Agree to receive emails
+            </label>
+
+            <label>Interests:</label>
+            <div class="interests">
+                <label>
+                    <input type="checkbox" id="interest1" name="interest" value="서버 개발">
+                    서버 개발
+                </label>
+                <label>
+                    <input type="checkbox" id="interest2" name="interest" value="앱 개발">
+                    앱 개발
+                </label>
+            </div>
+
+            <label for="phone">Phone:</label>
+            <input type="tel" id="phone" name="phone">
+
+            <label for="introduce">Introduction:</label>
+            <textarea id="introduce" name="introduce" rows="4" cols="50"></textarea>
+
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+</body>
+</html>

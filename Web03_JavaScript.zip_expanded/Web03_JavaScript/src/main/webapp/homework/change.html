@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+   <input type="text" id="input">
+   <button onclick="change()">변경</button>
+   <div id="content">
+      <p style="color : red">무슨 색 일까요?</p>
+      <p style="color : blue">무슨 색 일까요?</p>
+      <p style="color : red">무슨 색 일까요?</p>
+      <p style="color : blue">무슨 색 일까요?</p>
+   </div>
+   
+   <script type="text/javascript">
+      function change() {
+         let value = document.getElementById('input').value;
+         
+         let para = document.getElementById('content').getElementsByTagName('p');
+         
+         for (let i = 0; i < para.length; i++) {
+            let p = para[i];
+            
+            if (value === '1') {
+               if (p.style.color === 'red') {
+                  p.style.color = 'yellow';
+               } else if (p.style.color === 'yellow') {
+                  p.style.color = 'red';
+               }
+            }
+            else if (value === '2') {
+               if (p.style.color === 'blue') {
+                  p.style.color = 'green';
+               } else if (p.style.color === 'green') {
+                  p.style.color = 'blue';
+               }
+            }
+         }
+         
+         if (value !== '1' && value !== '2') {
+            alert('1 또는 2를 입력하세요.');
+         }
+      }
+   </script>
+</body>
+</html>

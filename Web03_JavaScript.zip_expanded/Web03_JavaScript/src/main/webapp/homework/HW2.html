@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>연락처 프로그램</title>
+<style>
+.label {
+     	font-weight: bold;
+       }
+</style>
+</head>
+<body>
+    <h1>연락처 프로그램</h1>
+    <div class="contact-form">
+        <div><span class="label">이름 :</span> <input type="text" id="name"></div>
+        <div><span class="label">전화번호 :</span> <input type="text" id="phone"></div>
+        <div><span class="label">이메일 :</span> <input type="text" id="email"></div>
+        
+        <br><button onclick="addContact()">입력</button>
+        <button onclick="selectAll()">전체검색</button>
+        
+        <span class="label">인덱스 : </span><input type="text" id="index">
+        <button onclick="deleteContact()">삭제</button>
+    </div>
+    <div id="contactList"></div>
+    
+    <script type="text/javascript">
+    
+    let contacts = [];
+    
+    function addContact() {
+       let name = document.getElementById('name').value;
+       let phone = document.getElementById('phone').value;
+       let email = document.getElementById('email').value;
+    
+       if (name && phone && email) {
+           let contact = {
+               name: name,
+               phone: phone,
+               email: email
+           };
+
+           contacts.push(contact);
+
+           document.getElementById('name').value = '';
+           document.getElementById('phone').value = '';
+           document.getElementById('email').value = '';
+           alert('연락처가 저장되었습니다!');
+       	}else {
+       		alert('모든 정보를 입력해주세요.');
+       	}
+   }
+    
+    function selectAll(){
+    	 let contactList = document.getElementById('contactList');
+         contactList.innerHTML = '';
+
+         if (contacts.length === 0) {
+        	 alert('저장된 연락처가 없습니다.');
+         } else {
+        	 for (let i = 0; i < contacts.length; i++) {
+                 let contact = contacts[i];
+                 contactList.innerHTML += i +  '번> 이름: ' + contact.name + ' | 전화번호: ' + contact.phone + ' | 이메일: ' + contact.email + '<br>';
+         		}
+         }
+    }
+
+    function deleteContact() {
+        let index = parseInt(document.getElementById('index').value);
+        let contactList = document.getElementById('contactList');
+
+        if (isNaN(index) || index < 0 || index >= contacts.length) {
+            alert('유효한 인덱스를 입력하세요.');
+        } else {
+            contacts.splice(index, 1); 
+
+            alert('연락처가 삭제되었습니다!');
+
+            document.getElementById('index').value = ''; 
+
+            selectAll();
+        }
+    }
+    
+    </script>
+</body>
+</html>

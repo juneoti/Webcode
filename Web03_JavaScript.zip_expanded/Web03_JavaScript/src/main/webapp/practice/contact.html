@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>연락처 프로그램</title>
+<style>
+    .label {
+        font-weight: bold;
+    }
+</style>
+</head>
+<body>
+    <h1>연락처 프로그램</h1>
+    <div class="contact-form">
+        <div><span class="label">이름 :</span> <input type="text" id="name" placeholder="이름을 입력하세요"></div>
+        <div><span class="label">전화번호 :</span> <input type="text" id="phone" placeholder="전화번호를 입력하세요"></div>
+        <div><span class="label">이메일 :</span> <input type="text" id="email" placeholder="이메일을 입력하세요"></div>
+        
+        <br><button onclick="addContact()">입력</button>
+        <button onclick="selectAll()">전체검색</button>
+        
+        <span class="label">인덱스 : </span><input type="text" id="index">
+        <button onclick="deleteContact()">삭제</button>
+    </div>
+    <div id="contactList"></div>
+
+    <script type="text/javascript">
+        let contacts = [];
+
+        // 연락처 추가 함수
+        function addContact() {
+            let name = document.getElementById('name').value;
+            let phone = document.getElementById('phone').value;
+            let email = document.getElementById('email').value;
+
+            if (name && phone && email) {
+                let contact = {
+                    name: name,
+                    phone: phone,
+                    email: email
+                };
+
+                // 연락처 배열에 추가
+                contacts.push(contact);
+
+                // 입력 필드 초기화
+                document.getElementById('name').value = '';
+                document.getElementById('phone').value = '';
+                document.getElementById('email').value = '';
+
+                // 알림
+                contactList.innerHTML = '연락처가 저장되었습니다!';
+            } else {
+                contactList.innerHTML = '모든 필드를 입력하세요.';
+            }
+        }
+
+        // 전체 검색 버튼 클릭 시, 연락처 목록 출력 함수
+        function selectAll() {
+            let contactList = document.getElementById('contactList');
+            contactList.innerHTML = '';  // 이전 내용 초기화
+
+            if (contacts.length === 0) {
+                contactList.innerHTML = '저장된 연락처가 없습니다.';
+            } else {
+                // 연락처 배열을 순차적으로 출력
+                for (let i = 0; i < contacts.length; i++) {
+                    let contact = contacts[i];
+                    contactList.innerHTML += '<p>' + i + '번> 이름: ' + contact.name + ' | 전화번호: ' + contact.phone + ' | 이메일: ' + contact.email + '</p>';
+                }
+            }
+        }
+
+        // 삭제 함수 (인덱스를 입력 받아서 해당 연락처 삭제)
+        function deleteContact() {
+            let index = parseInt(document.getElementById('index').value);  // 인덱스 입력 값 가져오기
+            let contactList = document.getElementById('contactList');
+
+            // 유효한 인덱스인지 확인
+            if (isNaN(index) || index < 0 || index >= contacts.length) {
+                contactList.innerHTML = '유효한 인덱스를 입력하세요.';
+            } else {
+                // 해당 인덱스의 연락처 삭제
+                contacts.splice(index, 1); 
+
+                // 삭제 후 알림
+                alert('연락처가 삭제되었습니다!');
+
+                // 인덱스 입력 필드 초기화
+                document.getElementById('index').value = ''; 
+
+                // 목록 다시 출력
+                selectAll();
+            }
+        }
+    </script>
+</body>
+</html>

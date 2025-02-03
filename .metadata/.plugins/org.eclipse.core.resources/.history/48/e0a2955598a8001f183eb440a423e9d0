@@ -1,0 +1,148 @@
+<%@page import="java.util.Arrays"%>
+<%@page import="edu.web.member.MemberVO"%>
+<%@page import="edu.web.member.MemberDAOImple"%>
+<%@page import="edu.web.member.MemberDAO"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>회원 정보 변경</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        background-color: #f9f9f9;
+    }
+
+    .update-container {
+        width: 400px;
+        padding: 20px;
+        background: #ffffff;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+
+    .update-container h2 {
+        margin-bottom: 20px;
+        font-size: 24px;
+        color: #333;
+    }
+
+    .update-container form {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .update-container label {
+        text-align: left;
+        font-size: 14px;
+        color: #555;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+
+    .update-container input[type="text"],
+    .update-container input[type="password"],
+    .update-container input[type="email"],
+    .update-container textarea {
+        width: 100%;
+        padding: 8px;
+        font-size: 14px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+
+    .update-container input[type="checkbox"] {
+        transform: scale(1.2);
+        margin-right: 8px;
+    }
+
+    .update-container textarea {
+        resize: none;
+    }
+
+    .update-container button {
+        padding: 10px;
+        font-size: 14px;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-top: 10px;
+    }
+
+    .update-container button[type="submit"] {
+        background-color: #007bff;
+    }
+
+    .update-container button[type="submit"]:hover {
+        background-color: #0056b3;
+    }
+
+    .update-container button[type="button"] {
+        background-color: #6c757d;
+    }
+
+    .update-container button[type="button"]:hover {
+        background-color: #5a6268;
+    }
+</style>
+</head>
+<body>
+    <%
+        String userid = (String) session.getAttribute("userid");
+        MemberDAO dao = MemberDAOImple.getInstance();
+        MemberVO member = dao.select(userid);
+        if (member == null) {
+            out.println("<script>alert('회원 정보를 찾을 수 없습니다. 로그인 페이지로 이동합니다.'); location.href='login.jsp';</script>");
+            return;
+        }
+    %>
+    <div class="update-container">
+        <h2>회원정보 변경</h2>
+        <form action="UpdateServlet" method="post" autocomplete="off">
+            <label for="userid">User ID: <%= member.getUserid() %></label>
+            <input type="hidden" name="userid" value="<%= member.getUserid() %>">
+
+            <label for="password">Password:</label>
+            <input type="password" name="password" value="<%= member.getPassword() %>" required>
+
+            <label for="email">Email:</label>
+            <input type="email" name="email" value="<%= member.getEmail() %>" required>
+
+            <label for="emailAgree">
+                <input type="checkbox" name="emailAgree" value="Y" <%= "YES".equals(member.getEmailAgree()) ? "checked" : "" %>>
+                Agree to receive emails
+            </label>
+
+            <label>Interests:</label>
+            <div>
+                <input type="checkbox" id="interest1" name="interest" value="서버 개발" <%= Arrays.asList(member.getInterest()).contains("서버 개발") ? "checked" : "" %>>
+                <label for="interest1">서버 개발</label>
+            </div>
+            <div>
+                <input type="checkbox" id="interest2" name="interest" value="앱 개발" <%= Arrays.asList(member.getInterest()).contains("앱 개발") ? "checked" : "" %>>
+                <label for="interest2">앱 개발</label>
+            </div>
+
+            <label for="phone">Phone:</label>
+            <input type="text" name="phone" value="<%= member.getPhone() %>" required>
+
+            <label for="introduce">Introduction:</label>
+            <textarea id="introduce" name="introduce" rows="4" required><%= member.getIntroduce() %></textarea>
+
+            <button type="submit">정보 수정</button>
+            <button type="button" onclick="location.href='loginResult.jsp'">취소</button>
+        </form>
+    </div>
+</body>
+</html>

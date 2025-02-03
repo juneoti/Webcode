@@ -1,0 +1,167 @@
+<%@page import="edu.web.member.MemberDAOImple"%>
+<%@page import="edu.web.member.MemberDAO"%>
+<%@page import="edu.web.member.MemberVO"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>로그인 결과</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        background-color: #f9f9f9;
+    }
+
+    .result-container {
+        width: 400px;
+        padding: 20px;
+        background: #ffffff;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+
+    .result-container p {
+        font-size: 16px;
+        color: #333;
+        margin-bottom: 10px;
+    }
+
+    .result-container span {
+        font-weight: bold;
+        color: #007bff;
+    }
+
+    .result-container button {
+        width: 100%;
+        padding: 10px;
+        font-size: 14px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-bottom: 10px;
+    }
+
+    .result-container button:hover {
+        opacity: 0.9;
+    }
+
+    .info-update-container {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+    .info-update-container button {
+        flex: 1;
+        padding: 10px;
+        font-size: 14px;
+        background-color: #fff; /* 하얀색 배경 */
+        color: #007bff; /* 파란색 텍스트 */
+        border: 2px solid #007bff; /* 파란색 테두리 */
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .info-update-container button:hover {
+        background-color: #007bff; /* 파란색 배경 */
+        color: #fff; /* 흰색 텍스트 */
+    }
+
+    .logout-button {
+        background-color: #6c757d; /* 회색 */
+        color: #fff;
+    }
+
+    .logout-button:hover {
+        background-color: #5a6268; /* 어두운 회색 */
+    }
+
+    .delete-button {
+        background-color: #dc3545; /* 빨간색 */
+        margin-top: 10px; /* 로그아웃 버튼과 간격 */
+    }
+
+    .delete-button:hover {
+        background-color: #c82333; /* 더 어두운 빨간색 */
+    }
+</style>
+<script>
+    function showMemberInfo() {
+        setTimeout(function() {
+            <% 
+                String userid = (String) session.getAttribute("userid");
+                MemberDAO dao = MemberDAOImple.getInstance();
+                MemberVO member = dao.select(userid);
+                if (member != null) {
+            %>
+            alert("아이디: <%= member.getUserid() %>\n" +
+                  "비밀번호: <%= member.getPassword() %>\n" +
+                  "이메일: <%= member.getEmail() %>\n" +
+                  "이메일 수신 동의: <%= member.getEmailAgree() %>\n" +
+                  "관심사: <%= String.join(", ", member.getInterest()) %>\n" +
+                  "전화번호: <%= member.getPhone() %>\n" +
+                  "자기소개: <%= member.getIntroduce() %>");
+            <% 
+                } else { 
+            %>
+            alert("회원 정보를 찾을 수 없습니다.");
+            <% 
+                } 
+            %>
+        }, 0);
+    }
+
+    function confirmDelete() {
+        const userConfirmed = confirm("정말 삭제하시겠습니까?");
+        if (userConfirmed) {
+            window.location.href = 'DeleteServlet';
+            alert("계정을 성공적으로 삭제했습니다.");
+        } else {
+            alert("회원 탈퇴가 취소되었습니다.");
+        }
+    }
+</script>
+</head>
+<body>
+    <%
+        int remainingTime = session.getMaxInactiveInterval() > 0 ? session.getMaxInactiveInterval() : 60;
+    %>
+    <div class="result-container">
+        <p><span><%= userid %></span>님 환영합니다.</p>
+        <p>현재 남은 세션 시간: <span id="remainingTime"><%= remainingTime %></span>초</p>
+        <div class="info-update-container">
+            <button onclick="showMemberInfo()">정보조회</button>
+            <button onclick="location.href='memberUpdate.jsp'">정보변경</button>
+        </div>
+        <button class="logout-button" onclick="location.href='LogoutServlet'">로그아웃</button>
+        <button class="delete-button" onclick="confirmDelete()">회원탈퇴</button>
+    </div>
+    <script>
+        let remainingTime = <%= remainingTime %>;
+        let sessionExpired = false;
+
+        function updateRemainingTime() {
+            if (remainingTime > 0) {
+                remainingTime--;
+                document.getElementById("remainingTime").innerText = remainingTime;
+            } else if (!sessionExpired) {
+                sessionExpired = true;
+                alert("세션이 만료되었습니다. 다시 로그인해 주세요.");
+                window.location.href = 'login.jsp';
+            }
+        }
+
+        setInterval(updateRemainingTime, 1000);
+    </script>
+</body>
+</html>

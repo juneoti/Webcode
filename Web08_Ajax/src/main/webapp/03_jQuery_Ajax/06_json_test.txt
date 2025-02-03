@@ -1,0 +1,8 @@
+{
+	"name" : "mok",
+	"age" : 20,
+	"pets" : [
+		 {"type": "dog", "name": "choco"},
+        {"type": "cat", "name": "navi"}
+	]
+}

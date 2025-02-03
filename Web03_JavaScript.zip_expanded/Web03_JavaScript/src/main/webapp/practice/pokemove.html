@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>포켓몬 스타일 맵</title>
+  <style>
+    /* 전역 스타일 */
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f0f0f0;
+    }
+
+    /* 게임 맵 컨테이너 */
+    #gameContainer {
+      position: relative;
+      width: 500px;
+      height: 500px;
+      background-color: #a1d3f4;
+      border: 2px solid #333;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: repeat(10, 1fr); /* 10개의 칸 */
+      grid-template-rows: repeat(10, 1fr); /* 10개의 행 */
+    }
+
+    /* 캐릭터 스타일 */
+    #character {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      background-color: #ff0000; /* 빨간색으로 캐릭터 표시 */
+      border-radius: 5px;
+      top: 0;
+      left: 0;
+      transition: top 0.1s, left 0.1s; /* 부드러운 이동을 위해 transition 추가 */
+    }
+
+    /* 각 그리드 셀의 스타일 (선택 사항, 시각적으로 셀 구분) */
+    .grid-cell {
+      border: 1px solid #fff;
+      box-sizing: border-box;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="gameContainer">
+    <div id="character"></div>
+  </div>
+
+  <script>
+    // 캐릭터와 맵을 설정
+    const character = document.getElementById('character');
+    const gameContainer = document.getElementById('gameContainer');
+    const gridSize = 10; // 맵을 10x10 크기로 설정
+    const cellSize = 50; // 각 셀의 크기
+
+    let currentRow = 0; // 초기 캐릭터 위치 (행)
+    let currentCol = 0; // 초기 캐릭터 위치 (열)
+
+    // 캐릭터 이동 함수
+    function moveCharacter(event) {
+      switch (event.key) {
+        case 'ArrowUp':
+          if (currentRow > 0) currentRow--; // 위로 이동
+          break;
+        case 'ArrowDown':
+          if (currentRow < gridSize - 1) currentRow++; // 아래로 이동
+          break;
+        case 'ArrowLeft':
+          if (currentCol > 0) currentCol--; // 왼쪽으로 이동
+          break;
+        case 'ArrowRight':
+          if (currentCol < gridSize - 1) currentCol++; // 오른쪽으로 이동
+          break;
+      }
+
+      // 캐릭터의 새로운 위치 계산
+      const top = currentRow * cellSize;
+      const left = currentCol * cellSize;
+
+      // 캐릭터의 위치를 업데이트
+      character.style.top = `${top}px`;
+      character.style.left = `${left}px`;
+    }
+
+    // 키보드 입력 이벤트 리스너 추가
+    window.addEventListener('keydown', moveCharacter);
+  </script>
+
+</body>
+</html>

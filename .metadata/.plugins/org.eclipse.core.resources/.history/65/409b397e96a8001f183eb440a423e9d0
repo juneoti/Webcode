@@ -1,0 +1,111 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>로그인</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        background-color: #f9f9f9;
+    }
+
+    .login-container {
+        text-align: center;
+        width: 300px;
+        padding: 20px;
+        background: #ffffff;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .login-container h2 {
+        margin-bottom: 20px;
+        font-size: 24px;
+        color: #333;
+    }
+
+    .login-container form {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .login-container label {
+        text-align: left;
+        font-size: 14px;
+        color: #555;
+        margin-left: -10px;
+    }
+
+    .login-container input {
+        width: 100%;
+        padding: 8px;
+        font-size: 14px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        margin-left: -10px;
+    }
+
+    .login-container button {
+        padding: 10px;
+        font-size: 14px;
+        color: #fff;
+        background-color: #007bff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-top: 10px;
+    }
+
+    .login-container button:hover {
+        background-color: #0056b3;
+    }
+
+    .secondary-buttons {
+        margin-top: 20px;
+        display: flex;
+        justify-content: space-between; 
+    }
+
+    .secondary-buttons button {
+        background-color: #6c757d; 
+        color: #fff; 
+        border: none;
+        border-radius: 5px;
+        padding: 10px 20px;
+        cursor: pointer;
+        font-size: 14px;
+        flex: 1; 
+        margin: 0 5px;
+    }
+
+    .secondary-buttons button:hover {
+        background-color: #5a6268; /* 더 어두운 회색 */
+    }
+</style>
+</head>
+<body>
+    <div class="login-container">
+        <h2>로그인</h2>
+        <form action="LoginServlet" method="post">
+            <label for="username">아이디:</label>
+            <input type="text" id="username" name="username" required>
+            <label for="password">비밀번호:</label>
+            <input type="password" id="password" name="password" required>
+            <button type="submit">로그인</button>
+        </form>
+        <div class="secondary-buttons">
+            <button onclick="location.href='memberRegister.jsp'">회원가입</button>
+            <button onclick="location.href='memberResult.jsp'">회원정보조회</button>
+        </div>
+    </div>
+</body>
+</html>

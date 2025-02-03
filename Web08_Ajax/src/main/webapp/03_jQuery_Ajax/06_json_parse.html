@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+<title>Get Method</title>
+</head>
+<body>
+	<p id="output"></p>
+	<script type="text/javascript">
+	$(document).ready(function(){
+		$.ajax({
+			type : "get",
+			url : "06_json_test.txt",
+			success : function(result) {
+				console.log(result);
+				console.log(typeof(result));
+				
+				let obj = JSON.parse(result);
+				console.log(typeof(obj));
+				let str = "";
+				str += '이름 : ' + obj.name + '<br>';
+				str += '나이 : ' + obj.age + '<br>';
+			
+				obj.pets.forEach(function(pet) {
+					str += '펫 : ' + pet.type + ', 이름 : ' + pet.name + '<br>';
+				});
+				/*  	
+				for (let i = 0; i < result.pets.length; i++) {
+					let pet = result.pets[i];
+					output += '펫 : ' + pet.type + ', 이름 : ' + pet.name + '<br>';
+				}
+			*/
+				$("#output").html(str);
+			} // close success 
+		}); // close ajax 
+	}); // close ready 
+	</script>
+</body>
+</html>

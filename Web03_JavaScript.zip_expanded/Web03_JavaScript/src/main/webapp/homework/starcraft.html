@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Starcraft</title>
+<style>
+  .marine {
+    transform: scaleX(-1);
+  }
+</style>
+</head>
+<body>
+	<h1>질럿과 마린의 대결</h1>
+	<img src = "../images/zilot.png" onclick="attackToMarine()">
+	<img src = "../images/marine.png" class="marine" onclick="attackToZilot()">
+	<div id="output"></div>
+	
+	<script type="text/javascript">
+		//생성자 함수
+		function Unit(name, hp, power, defence){
+			this.name = name;
+			this.hp = hp;
+			this.power = power;
+			this.defence = defence;
+			
+			this.attack =  function(Unit) {
+				let damage = this.power - Unit.defence;
+				if (damage <= 0) {
+					damage = 1;
+				}
+				Unit.hp = Unit.hp - damage;
+				
+				output.innerHTML += this.name + '이(가) 공격했다. <br>';
+				output.innerHTML += Unit.name + '은(는)'
+					+ damage + '의 데미지를 입었다. <br>';
+				output.innerHTML += Unit.name + '의 남은 HP :'
+				+ Unit.hp + '<br>';
+				output.innerHTML += '<hr>';
+				
+				if (Unit.hp <= 0) {
+					alert(Unit.name + '이(가) 죽었습니다!');
+					resetUnit(Unit); 
+				}
+			}
+			this.reset = function() {
+				this.hp = hp; 
+				this.power = power; 
+				this.defence = defence;
+			}
+		}
+		
+		// 객체 선언
+		let zilot = new Unit('질럿', 100, 40, 10);
+		let marine = new Unit('마린', 50, 5, 5);
+		
+		function attackToMarine(){
+			alert('내 목숨을 아이어에!');
+			zilot.attack(marine);
+		}
+		
+		function attackToZilot(){
+			alert('한 판 붙어볼까, 애송이?');
+			marine.attack(zilot);
+		}
+		
+		function resetUnit(Unit) {
+			Unit.reset();
+			output.innerHTML += Unit.name + '이(가) 부활했습니다. <br>';
+		}
+	</script>
+</body>
+</html>

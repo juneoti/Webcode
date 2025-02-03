@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>포켓몬 배틀</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+      background-color: #f8f9fa;
+    }
+    #game {
+      margin-top: 30px;
+    }
+    .pokemon {
+      display: inline-block;
+      padding: 20px;
+      margin: 20px;
+      border: 2px solid #007bff;
+      border-radius: 10px;
+      background-color: #f0f8ff;
+      width: 200px;
+      text-align: center;
+    }
+    .pokemon img {
+      width: 100px;
+      height: 100px;
+    }
+    #battle-result {
+      margin-top: 30px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <h1>포켓몬 배틀</h1>
+  <div id="game">
+    <div id="pokemon1" class="pokemon">
+      <h2>피카츄</h2>
+      <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png" alt="Pikachu">
+      <p>체력: <span id="hp1">100</span></p>
+      <p>공격력: <span id="atk1">20</span></p>
+    </div>
+    <div id="pokemon2" class="pokemon">
+      <h2>이상해씨</h2>
+      <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png" alt="Bulbasaur">
+      <p>체력: <span id="hp2">100</span></p>
+      <p>공격력: <span id="atk2">18</span></p>
+    </div>
+  </div>
+  <button onclick="startBattle()">배틀 시작!</button>
+  <div id="battle-result"></div>
+
+  <script>
+    // 포켓몬 객체
+    const pokemon1 = {
+      name: "피카츄",
+      hp: 100,
+      attack: 20
+    };
+
+    const pokemon2 = {
+      name: "이상해씨",
+      hp: 100,
+      attack: 18
+    };
+
+    // 공격 함수
+    function attack(attacker, defender) {
+      const damage = Math.floor(Math.random() * attacker.attack) + 1; // 랜덤 공격력
+      defender.hp -= damage;
+      return damage;
+    }
+
+    // 배틀 함수
+    function startBattle() {
+      document.getElementById("battle-result").innerHTML = ""; // 결과 초기화
+      let battleInterval = setInterval(() => {
+        if (pokemon1.hp <= 0 || pokemon2.hp <= 0) {
+          clearInterval(battleInterval);
+          if (pokemon1.hp <= 0) {
+            document.getElementById("battle-result").innerHTML = `${pokemon2.name} 승리!`;
+          } else if (pokemon2.hp <= 0) {
+            document.getElementById("battle-result").innerHTML = `${pokemon1.name} 승리!`;
+          }
+          return;
+        }
+
+        // 각 포켓몬의 턴
+        let damage1 = attack(pokemon1, pokemon2);
+        let damage2 = attack(pokemon2, pokemon1);
+
+        // UI 업데이트
+        document.getElementById("hp1").textContent = pokemon1.hp;
+        document.getElementById("hp2").textContent = pokemon2.hp;
+        
+        // 배틀 진행 상황 출력
+        document.getElementById("battle-result").innerHTML += `${pokemon1.name}가 ${pokemon2.name}에게 ${damage1}의 피해를 주었습니다!<br>`;
+        document.getElementById("battle-result").innerHTML += `${pokemon2.name}가 ${pokemon1.name}에게 ${damage2}의 피해를 주었습니다!<br><br>`;
+      }, 1000);
+    }
+  </script>
+</body>
+</html>
